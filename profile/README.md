@@ -1,12 +1,15 @@
 <p align="right">
-    <a href="https://github.com/Nayjest/ai-microcore/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/static/v1?label=license&message=MIT&color=d08aff" alt="License"></a>
     <a href="https://github.com/Nayjest/ai-microcore/releases" target="_blank"><img src="https://img.shields.io/github/release/ai-microcore/microcore" alt="Release Notes"></a>
+    <a href="https://app.codacy.com/gh/Nayjest/ai-microcore/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade" target="_blank"><img src="https://app.codacy.com/project/badge/Grade/441d03416bc048828c649129530dcbc3" alt="Code Quality"></a>
+    <a href="https://github.com/Nayjest/ai-microcore/actions/workflows/pylint.yml" target="_blank"><img src="https://github.com/Nayjest/ai-microcore/actions/workflows/pylint.yml/badge.svg" alt="Pylint"></a>
+    <a href="https://github.com/Nayjest/ai-microcore/actions/workflows/tests.yml" target="_blank"><img src="https://github.com/Nayjest/ai-microcore/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
+    <a href="https://github.com/Nayjest/ai-microcore/blob/main/LICENSE" target="_blank"><img src="https://img.shields.io/static/v1?label=license&message=MIT&color=d08aff" alt="License"></a>
 </p>
 
 
 # AI MicroCore: A Minimalistic Foundation for AI Applications
 
-This package is a collection of adapters for Large Language Models
+**microcore** is a collection of python adapters for Large Language Models
 and Semantic Search APIs allowing to 
 communicate with these services convenient way, make it easily switchable 
 and separate business logic from implementation details.
@@ -26,12 +29,25 @@ while user_msg := input('Enter message: '):
     print('AI: ' + llm(user_msg))
 ```
 
+## Links
 
+ -   [API Reference](https://ai-microcore.github.io/api-reference/)
+ -   [PyPi Package](https://pypi.org/project/ai-microcore/)
+ -   [GitHub Repository](https://github.com/Nayjest/ai-microcore)
 ## Installation
 
+Install as PyPi package:
 ```
 pip install ai-microcore
 ```
+
+Alternatively may just copy `microcore` folder to your project sources root.
+```bash
+git clone git@github.com:Nayjest/ai-microcore.git && mv ai-microcore/microcore ./ && rm -rf ai-microcore
+```
+## Requirements
+
+Python 3.10+
 
 ## Configuring
 
@@ -44,25 +60,26 @@ Similarity search features will work out of the box if you have the `chromadb` p
 ### Configuration Methods
 
 There are a few options available for configuring microcore:
-- Use `microcore.configure()`
-  <br>💡 <small>All configuration options should be available in IDE autocompletion tooltips</small>
-- Create a `.env` file in your project root ([example](https://github.com/Nayjest/ai-microcore/blob/main/.env.example))
-- Use a custom configuration file: `mc.configure(DOT_ENV_FILE='dev-config.ini')`
-- Define OS environment variables
+
+-   Use `microcore.configure()`
+    <br>💡 <small>All configuration options should be available in IDE autocompletion tooltips</small>
+-   Create a `.env` file in your project root ([example](https://github.com/Nayjest/ai-microcore/blob/main/.env.example))
+-   Use a custom configuration file: `mc.configure(DOT_ENV_FILE='dev-config.ini')`
+-   Define OS environment variables
 
 For the full list of available configuration options, you may also check [`microcore/config.py`](https://github.com/Nayjest/ai-microcore/blob/main/microcore/config.py).
 
 ### Priority of Configuration Sources
 
-1. Configuration options passed as arguments to `microcore.configure()` have the highest priority.
-2. The priority of configuration file options (`.env` by default or the value of `DOT_ENV_FILE`) is higher than OS environment variables.
-   <br>💡 <small>Setting `USE_DOT_ENV` to `false` disables reading configuration files.</small>
-3. OS environment variables has the lowest priority.
+1.  Configuration options passed as arguments to `microcore.configure()` have the highest priority.
+2.  The priority of configuration file options (`.env` by default or the value of `DOT_ENV_FILE`) is higher than OS environment variables.
+    <br>💡 <small>Setting `USE_DOT_ENV` to `false` disables reading configuration files.</small>
+3.  OS environment variables has the lowest priority.
 
 
 ## Core Functions
 
-### *llm(prompt: str, \*\*kwargs) →* str
+### llm(prompt: str, \*\*kwargs) → str
 
 Performs a request to a large language model (LLM)
 
@@ -109,7 +126,7 @@ llm('Hi there', callbacks=[
 ])
 ```
 
-### *tpl(file_path, \*\*params) →* str
+### tpl(file_path, \*\*params) → str
 Renders prompt template with params.
 
 Full-featured Jinja2 templates are used by default.
@@ -124,16 +141,23 @@ configure(
 )
 ```
 
-### *store(collection: str | None, **kwargs)
-Stores data in embeddings database of your choice
+### texts.search(collection: str, query: str | list, n_results: int = 5, where: dict = None, **kwargs) → list[str]
+Similarity search
 
-@TODO
+### texts.find_one(self, collection: str, query: str | list) → str | None
+Find most similar text
 
-### *search(collection: str | None, **kwargs)
-Performs semantic / similarity search over embeddings database
+### texts.get_all(self, collection: str) -> list[str]
+Return collection of texts
 
-@TODO
+### texts.save(collection: str, text: str, metadata: dict = None))
+Store text and related metadata in embeddings database
 
+### texts.save_many(collection: str, items: list[tuple[str, dict] | str])
+Store mutiple texts and related metadata in embeddings database
+
+### texts.clear(collection: str):
+Clear collection
 
 ## API providers and models support
 
@@ -172,11 +196,10 @@ based on metadata in module docstrings.
 import microcore.ai_modules
 ```
 ### Features:
-* Automatically registers template folders of AI modules in Jinja2 environment
+
+*   Automatically registers template folders of AI modules in Jinja2 environment
  
 
 ## License
 
-© 2023&mdash;∞ Vitalii Stepanenko
-
-Licensed under the MIT License. 
+Licensed under the [MIT License](https://github.com/Nayjest/ai-microcore) © 2023 [Vitalii Stepanenko](mailto:mail@vitalii.in)
